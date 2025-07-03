@@ -2,8 +2,6 @@
 
 require 'common.php';
 
-
-
 require 'header.php';
 
 ?>

@@ -26,5 +26,21 @@ function updateData($table, $mysql, $data, $where)
         $wheres[] = "`$key` = '$value'";
     }
     $sql .= implode(" AND ", $wheres);
+
+    return $mysql->query($sql);
+}
+
+function insertData($table, $mysql, $data)
+{
+    $columns = [];
+    $values = [];
+
+    foreach ($data as $key => $value) {
+        $columns[] = "`$key`";
+        $values[] = "'$value'";
+    }
+
+    $sql = "INSERT INTO `$table` (" . implode(", ", $columns) . ") VALUES (" . implode(", ", $values) . ")";
+
     return $mysql->query($sql);
 }

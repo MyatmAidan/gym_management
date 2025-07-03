@@ -7,12 +7,12 @@ require 'central_function.php';
 $success = isset($_GET['success']) ? $_GET['success'] : '';
 
 //selecting data from table
-$res = select_data('member', $mysql, '*', '', '');
+$res = select_data('class', $mysql, '*', '', '');
 $delete_id = isset($_GET['delete_id']) ?  $_GET['delete_id'] : '';
 if ($delete_id !== '') {
-    $res = deleteData('member', $mysql, "member_id=$delete_id");
+    $res = deleteData('class', $mysql, "member_id=$delete_id");
     if ($res) {
-        $url = $admin_base_url . "member_list.php?success=Delete Member Success";
+        $url = $admin_base_url . "class_list.php?success=Delete Member Success";
         header("Location: $url");
         exit;
     }
@@ -34,7 +34,7 @@ require 'header.php';
                         <li class="list-inline-item"><a href="#"
                                 class="text-color text-uppercase text-sm letter-spacing">Team</a></li>
                     </ul>
-                    <h1 class="text-lg text-white mt-2">Member Listing</h1>
+                    <h1 class="text-lg text-white mt-2">Classes</h1>
                 </div>
             </div>
         </div>
@@ -43,10 +43,10 @@ require 'header.php';
     <div class="container">
         <div class="container-fluid">
             <div class="d-flex justify-content-between">
-                <h1>Member List</h1>
+                <h1>Class List</h1>
                 <div class="">
-                    <a href="<?= $admin_base_url . 'member_create.php' ?>" class="btn btn-sm btn-primary">
-                        Create Member
+                    <a href="<?= $admin_base_url . 'class_create.php' ?>" class="btn btn-sm btn-primary">
+                        Create Class
                     </a>
                 </div>
             </div>

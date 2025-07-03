@@ -1,8 +1,8 @@
 <?php
-
+session_start();
 require_once('./databaserequire.php');
-require 'header.php';
-require 'under_header.php';
+require './header.php';
+require './under_header.php';
 
 ?>
 

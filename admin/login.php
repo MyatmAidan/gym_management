@@ -1,4 +1,5 @@
 <?php
+session_start();
 require 'databaserequire.php';
 require 'common.php';
 require 'central_function.php';
@@ -6,7 +7,7 @@ require 'central_function.php';
 $email = '';
 $password = '';
 $error = false;
-
+$success = $_GET['success'] ? $_GET['success']  : '';
 if (isset($_POST['form_sub']) && $_POST['form_sub'] == 1) {
     $email = $_POST['email'];
     $password = $_POST['password'];
@@ -50,43 +51,61 @@ if (isset($_POST['form_sub']) && $_POST['form_sub'] == 1) {
 
 
 require 'header.php';
-require 'under_header.php';
 ?>
 
-<body>
-    <div class="container">
-        <div class="card-body pt-5">
-
-            <a class="text-center" href="index.html">
-                <h1 class="text-color">Sign In</h1>
-            </a>
-
-            <form class="mt-5 mb-5 login-input" method="POST">
-                <?php if ($success !== '') { ?>
-                    <div class="alert alert-success">
-                        <?= $success ?>
-                    </div>
-                <?php } ?>
-                <div class="form-group">
-                    <input type="email" class="form-control" name="email" placeholder="Email">
-                    <label for="name" class="text-danger"><?= $email_error ?></label>
+<div class="main-wrapper ">
+    <section class="page-title bg-2">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <ul class="list-inline mb-0">
+                        <li class="list-inline-item"><a href="index.php"
+                                class="text-sm letter-spacing text-white text-uppercase font-weight-bold">Home</a>
+                        </li>
+                        <li class="list-inline-item"><span class="text-white">|</span></li>
+                        <li class="list-inline-item"><a href="#"
+                                class="text-color text-uppercase text-sm letter-spacing">Team</a></li>
+                    </ul>
+                    <h1 class="text-lg text-white mt-2">Login</h1>
                 </div>
-                <div class="form-group">
-                    <input type="password" class="form-control" name="password" placeholder="Password">
-                    <label for="name" class="text-danger"><?= $password_error ?></label>
-                </div>
-                <input type="hidden" name="form_sub" value="1">
-                <button class="btn btn-dark login-form__btn submit w-100">Login</button>
-            </form>
-            <p class="mt-5 login-form__footer">Have account <a href="<?= $admin_base_url ?>login.php" class="text-primary">Sign in </a> now</p>
-            </p>
+            </div>
         </div>
-    </div>
-    </div>
+    </section>
 
-    <?=
-    require 'footer.php';
-    ?>
+    <body>
+        <div class="container">
+            <div class="card-body pt-5">
+
+                <a class="text-center" href="index.html">
+                    <h1 class="text-color">Sign In</h1>
+                </a>
+
+                <form class="mt-5 mb-5 login-input" method="POST">
+                    <?php if ($success !== '') { ?>
+                        <div class="alert alert-success">
+                            <?= $success ?>
+                        </div>
+                    <?php } ?>
+                    <div class="form-group">
+                        <input type="email" class="form-control" name="email" placeholder="Email">
+                        <label for="name" class="text-danger"><?= $email_error ?></label>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" name="password" placeholder="Password">
+                        <label for="name" class="text-danger"><?= $password_error ?></label>
+                    </div>
+                    <input type="hidden" name="form_sub" value="1">
+                    <button class="btn btn-dark login-form__btn submit w-100">Login</button>
+                </form>
+                <p class="mt-5 login-form__footer">Have account <a href="<?= $admin_base_url ?>login.php" class="text-primary">Sign in </a> now</p>
+                </p>
+            </div>
+        </div>
+</div>
+
+<?=
+require 'footer.php';
+?>
 
 </body>
 

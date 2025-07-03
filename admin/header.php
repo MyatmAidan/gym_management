@@ -29,6 +29,7 @@
     <link rel="stylesheet" href="plugins/slick-carousel/slick/slick-theme.css">
     <!-- Main Stylesheet -->
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
 
@@ -58,6 +59,7 @@
                             <li><a class="dropdown-item" href="about.html">About</a></li>
                             <li><a class="dropdown-item" href="services.php">Services</a></li>
                             <li><a class="dropdown-item" href="class.php">Class</a></li>
+                            <li><a class="dropdown-item" href="class_create.php">Class Create</a></li>
                             <li><a class="dropdown-item" href="calculate_bmi.php">BMI</a></li>
                         </ul>
                     </li>
@@ -75,7 +77,7 @@
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="member_create.php">New Member</a></li>
                             <li><a class="dropdown-item" href="member_list.php">Members</a></li>
-                            <li><a class="dropdown-item" href="blog-single.html">Member Edit</a></li>
+                            <li><a class="dropdown-item" href="blog-single.html">Member Activity</a></li>
                             <li><a class="dropdown-item" href="membership.php">Membership</a></li>
                         </ul>
                     </li>
