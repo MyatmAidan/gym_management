@@ -180,4 +180,17 @@ function create_table($mysql)
                 )";
 
     if ($mysql->query($payment_sql) === false) return false;
+
+
+    // image table create
+    $image_sql = "CREATE TABLE IF NOT EXISTS `image`
+                (
+                type ENUM('trainer','class') NOT NULL,
+                target_id VARCHAR(100) NOT NULL ,
+                img VARCHAR(100) NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                )";
+
+    if ($mysql->query($image_sql) === false) return false;
 }

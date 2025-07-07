@@ -6,42 +6,30 @@ require "central_function.php";
 
 $error = false;
 $class_name = '';
-$day_error = '';
+$price = '';
 
 $select_class = select_data('class', $mysql, '*', '', '');
+$select_trainer = select_data('trainer', $mysql, '*', '', '');
 
 $success = $_GET['success'] ? $_GET['success']  : '';
 
 if (isset($_POST['form_sub']) && $_POST['form_sub'] == 1 && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    $trainer_id = $_POST['trainer'];
     $class_id = $_POST['class'];
-    $day_of_week = $_POST['day_of_week'];
-    $start_time = $_POST['start_time'];
-    $end_time = $_POST['end_time'];
-
-    // if ($day_of_week === 'Sunday') {
-    //     $day_error = "Sunday is not allowed. Please choose another day.";
-    //     $error = true;
-    // }
-
-    // if ($start_time >= $end_time) {
-    //     $error = true;
-    //     $time_error = "End time must be after start time.";
-    // }
-
+    $price = $_POST['price'];
 
     if (!$error) {
 
         $data = [
+            'trainer_id' => $trainer_id,
             'class_id' => $class_id,
-            'day_of_week' => $day_of_week,
-            'start_time' => $start_time,
-            'end_time' => $end_time,
+            'price' => $price
         ];
 
-        $result = insertData('class_schedule', $mysql, $data);
+        $result = insertData('class_trainer', $mysql, $data);
 
         if ($result) {
-            $url = $admin_base_url . 'class_schedule_create.php?success=One row inserted.';
+            $url = $admin_base_url . 'class_trainer.php?success=Successfully inserted.';
             header("Location: $url");
             exit;
         } else {
@@ -69,7 +57,7 @@ require 'header.php';
                         <li class="list-inline-item"><a href="#"
                                 class="text-color text-uppercase text-sm letter-spacing">Team</a></li>
                     </ul>
-                    <h1 class="text-lg text-white mt-2">Class Schedule Create</h1>
+                    <h1 class="text-lg text-white mt-2">Class Details Create</h1>
                 </div>
             </div>
         </div>
@@ -79,7 +67,7 @@ require 'header.php';
         <div class="card-body pt-5">
 
             <a class="text-center" href="class_create.php">
-                <h1 class="text-color">Create Class Schedule</h1>
+                <h1 class="text-color">Create Class Details</h1>
             </a>
             <form class="mt-5 mb-5 login-input" method="POST">
                 <?php if ($success !== '') { ?>
@@ -87,6 +75,15 @@ require 'header.php';
                         <?= $success ?>
                     </div>
                 <?php } ?>
+                <div class="form-group">
+                    <select name="trainer" class="form-control" id="">
+                        <option value="">Trainer</option>
+                        <?php while ($row = $select_trainer->fetch_assoc()): ?>
+                            <option value="<?= $row['trainer_id'] ?>"><?= htmlspecialchars($row['trainer_name']) ?></option>
+                        <?php endwhile; ?>
+                    </select>
+                    <br>
+                </div>
                 <div class="form-group">
                     <select name="class" class="form-control" id="">
                         <option value="">Class</option>
@@ -97,27 +94,8 @@ require 'header.php';
                     <br>
                 </div>
                 <div class="form-group">
-                    <select name="day_of_week" class="form-control" id="day_of_week">
-                        <option value="">Day</option>
-                        <option value="monday">Monday</option>
-                        <option value="tuesday">Tuesday</option>
-                        <option value="wednesday">Wednesday</option>
-                        <option value="thursday">Thursday</option>
-                        <option value="friday">Friday</option>
-                        <option value="saturday">Saturday</option>
-                    </select>
-                    <label for="name" class="text-danger"><?= $day_error ?></label>
-                </div>
-                <div class="form-group">
-                    <label for="start_time">Start Time</label>
-                    <input type="time" class="form-control" placeholder="Start time" name="start_time" value="<?= $start_time ?>">
-                </div>
-                <div class="form-group">
-                    <label for="end_time">End Time</label>
-                    <input type="time" class="form-control" placeholder="End time" name="end_time" value="<?= $end_time ?> ">
-                </div>
-                <div class="form-group">
-                    <label for="name" class="text-danger"><?= $time_error ?></label>
+                    <input type="number" class="form-control" name="price" placeholder="Price">
+                    <label for="name" class="text-danger"><?= $price_error ?></label>
                 </div>
                 <input type="hidden" name="form_sub" value="1">
                 <button class="btn btn-dark login-form__btn submit w-100">Submit</button>

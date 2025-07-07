@@ -3,7 +3,6 @@ ob_start();
 require 'databaserequire.php';
 require 'common.php';
 require "central_function.php";
-
 $error = false;
 $class_name = '';
 $description = '';
@@ -13,6 +12,11 @@ $success = $_GET['success'] ? $_GET['success']  : '';
 if (isset($_POST['form_sub']) && $_POST['form_sub'] == 1 && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $class_name = $_POST['name'];
     $description = $_POST['description'];
+
+    $files          = $_FILES['image'];
+    $fileName = $files['name'];
+    $allowExtension = ['PNG', 'JPG', 'JPEG'];
+    $folder = 'upload/';
 
     //name validation
     if ($class_name == '' && strlen($class_name) == 0) {
@@ -42,20 +46,47 @@ if (isset($_POST['form_sub']) && $_POST['form_sub'] == 1 && $_SERVER['REQUEST_ME
         ];
 
         $result = insertData('class', $mysql, $data);
+        $class_id = $mysql->insert_id;
+        foreach ($fileName as $key => $val) {
+            $extension = explode('.', $val);
+            $extension = end($extension);
+            $tmpPath = $files['tmp_name'][$key];
 
+            if (!in_array($extension, $allowExtension)) {
+                $error = true;
+                $file_error = "File only allowed: png, jpg, jpeg";
+            } else {
+                if (!file_exists($folder)) {
+                    mkdir($folder, 0755, true); // Create folder with permission
+                }
+                var_dump("helo");
+                die();
+                $currentName = date("Ymd_His") . "_" . $val;
+                $fullPath = $folder . "/" . $currentName; // Full path to save image
 
-        if ($result) {
+                // Save data to DB
+                $img_data = [
+                    'type'      => "class",
+                    'target_id' => $class_id,
+                    'img'       => $currentName
+                ];
+                $result = insertData('image', $mysql, $img_data);
+            }
+        }
+
+        if ($result && $saveImg) {
             $url = $admin_base_url . 'class_create.php?success=Class Create Success';
             header("Location: $url");
             exit;
         } else {
             var_dump("hello");
-            $url = $admin_base_url . 'member_create.php?error=Error In Insertion';
+            $url = $admin_base_url . 'class_create.php?error=Error In Insertion';
             header("Location: $url");
             exit;
         }
     }
 }
+echo $file_error;
 require 'header.php';
 
 ?>
@@ -86,7 +117,7 @@ require 'header.php';
                 <h1 class="text-color">Create Class</h1>
             </a>
 
-            <form class="mt-5 mb-5 login-input" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
+            <form class="mt-5 mb-5 login-input" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST" enctype="multipart/form-data">
                 <?php if ($success !== '') { ?>
                     <div class="alert alert-success">
                         <?= $success ?>
@@ -99,6 +130,10 @@ require 'header.php';
                 <div class="form-group">
                     <input type="text" class="form-control" name="description" placeholder="Description">
                     <label for="description" class="text-danger"><?= $description_error ?></label>
+                </div>
+                <div class="form-group">
+                    <input type="file" name="image[]" multiple class="form-control" id="product_img">
+                    <span class="error_msg text-danger"></span>
                 </div>
                 <input type="hidden" name="form_sub" value="1">
                 <button class="btn btn-dark login-form__btn submit w-100">Submit</button>
